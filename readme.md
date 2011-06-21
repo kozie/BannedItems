@@ -1,0 +1,14 @@
+Installation
+============
+
+Just put the .jar file and the folder with the
+ignored-items.txt in your craftbukkit server's
+plugin folder and (re)start the server.
+
+Banning items
+=============
+You can get the correct data values for the items
+from [The Minecraft Wiki](http://www.minecraftwiki.net/wiki/Data_values).
+
+Make a newline-seperated list with only the id's
+(numbers) of the item you want to ban.
