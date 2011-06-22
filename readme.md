@@ -12,3 +12,6 @@ from [The Minecraft Wiki](http://www.minecraftwiki.net/wiki/Data_values).
 
 Make a newline-seperated list with only the id's
 (numbers) of the item you want to ban.
+Save the list as *ignored-items.txt* in a folder
+called *BannedItems*. The folder should be in the same
+folder of the .jar file.
