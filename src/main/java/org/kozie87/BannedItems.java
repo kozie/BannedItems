@@ -84,6 +84,12 @@ public class BannedItems extends JavaPlugin {
 			Player senderPlayer = (Player) sender;
 			int itemId = Integer.parseInt(args[1]);
 			
+			// Check if the sender has the rights to use the command
+			if (!sender.isOp()) {
+				sender.sendMessage("You have to be an admin/op to use this command");
+				return true;
+			}
+			
 			// Check if the player was found
 			if (player == null) {
 				sender.sendMessage("The requested player is not connected.");
@@ -103,11 +109,18 @@ public class BannedItems extends JavaPlugin {
 					itemStack.setAmount(1);
 				}
 				
-				// Eventually.. give the player what he wants
-				// and notice both players about the success.
+				// Eventually hand out the candy ^_^
 				player.getInventory().addItem(itemStack);
-				sender.sendMessage("Item "+itemId+" given to "+player.getName());
-				player.sendMessage(senderPlayer.getName()+" gave you item "+itemId);
+				
+				// Send message to the the users who are involved
+				if (senderPlayer.getEntityId() == player.getEntityId()) {
+				
+					sender.sendMessage("You gave yourself item "+itemId);
+				} else {
+					
+					sender.sendMessage("Item "+itemId+" given to "+player.getName());
+					player.sendMessage(senderPlayer.getName()+" gave you item "+itemId);
+				}
 				
 				return true;
 			} else {

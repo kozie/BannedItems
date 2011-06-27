@@ -2,6 +2,7 @@ name: BannedItems
 main: org.kozie87.BannedItems
 version: 1.2
 commands:
-    give: |
-        description: The usual give command overrided by BannedItems
-        usage: /<command> [PlayerName] [DataValue] [Quantity]
+  give:
+    aliases: [g]
+    description: The usual give command overrided by BannedItems
+    usage: /<command> [PlayerName] [DataValue] [Quantity]
