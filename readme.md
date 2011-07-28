@@ -1,6 +1,9 @@
+Project Home
+============
+Although the project is hosted on GitHub, additional information and a changelog can be found on [the Forums of Bukkit](http://forums.bukkit.org/threads/gen-banneditems-v1-2-banning-items-for-give-935.22447/).
+
 Installation
 ============
-
 Just put the .jar file and the folder with the
 ignored-items.txt in your craftbukkit server's
 plugin folder and (re)start the server.
