@@ -24,7 +24,7 @@ Usage (in-game)
 The command can be used just the same way you would use the default `/give` command.
 Alternately you can also use `/g`, `/i` or `/item` instead of `/give`
 
-`/give <PlayerName> <ItemId> <Amount (optional)>` 
-`/item <PlayerName> <ItemId> <Amount (optional)>` 
-`/g <PlayerName> <ItemId> <Amount (optional)>` 
+`/give <PlayerName> <ItemId> <Amount (optional)>`,
+`/item <PlayerName> <ItemId> <Amount (optional)>`,
+`/g <PlayerName> <ItemId> <Amount (optional)>`,
 `/i <PlayerName> <ItemId> <Amount (optional)>`
