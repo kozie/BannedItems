@@ -18,3 +18,13 @@ Make a newline-seperated list with only the id's
 Save the list as *ignored-items.txt* in a folder
 called *BannedItems*. The folder should be in the same
 folder of the .jar file.
+
+Usage (in-game)
+===============
+The command can be used just the same way you would use the default `/give` command.
+Alternately you can also use `/g`, `/i` or `/item` instead of `/give`
+
+`/give <PlayerName> <ItemId> <Amount (optional)>`
+`/item <PlayerName> <ItemId> <Amount (optional)>`
+`/g <PlayerName> <ItemId> <Amount (optional)>`
+`/i <PlayerName> <ItemId> <Amount (optional)>`
