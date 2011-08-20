@@ -1,5 +1,5 @@
 /**
- * BannedItems - v1.2
+ * BannedItems - v1.4
  * 
  * Simple plugin that overrides the default /give server command.
  * Only items not in the ignored-items.txt list are allowed to spawn
@@ -21,8 +21,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 import org.bukkit.Server;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -31,9 +31,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class BannedItems extends JavaPlugin {
 
-	// Define the logger
-	Logger log = Logger.getLogger("Minecraft");
-	
 	// Set local variables
 	private ArrayList<String> ignoreList;
 	private File folder;
@@ -77,16 +74,51 @@ public class BannedItems extends JavaPlugin {
 		Server server = sender.getServer();
 		
 		// Catch the 'give' command
-		if (cmd.getName().equalsIgnoreCase("give") && args.length > 1) {
+		if ((cmd.getName().equalsIgnoreCase("give") && args.length > 1) || (cmd.getName().equalsIgnoreCase("item") && args.length > 0)) {
 			
-			// Get the player and the value id the user is requesting
-			Player player = server.getPlayer(args[0]);
+			// Convert the sender to a Player object and set a default target player
 			Player senderPlayer = (Player) sender;
-			int itemId = Integer.parseInt(args[1]);
+			Player player = (Player) sender;
+			
+			// Set default amount of one
+			int itemId, amount = 1;
+			
+			// Give to a player or to self?
+			if (cmd.getName().equalsIgnoreCase("give")) {
+				
+				// Get the player and the value id the user is requesting
+				player = server.getPlayer(args[0]);
+				
+				// Get the item id
+				try {
+					itemId = Integer.parseInt(args[1]);
+				} catch (Exception e) {
+					
+					senderPlayer.sendMessage("That number is not valid.");
+					return true;
+				}
+				
+				// Check if there's an amount requested
+				if (args.length > 2 && Integer.parseInt(args[2]) > 0) {
+					amount = Integer.parseInt(args[2]);
+				}
+			} else {
+				
+				// Get the item id
+				itemId = Integer.parseInt(args[0]);
+				
+				// Check if there's an amount requested
+				if (args.length > 1 && Integer.parseInt(args[1]) > 0) {
+					amount = Integer.parseInt(args[1]);
+				}
+			}
 			
 			// Check if the sender has the rights to use the command
-			if (!sender.isOp()) {
-				sender.sendMessage("You have to be an admin/op to use this command");
+			//if (!sender.isOp()) {
+			if (!senderPlayer.hasPermission("BannedItems.give")) {
+				
+				//sender.sendMessage("You have to be an admin/op to use this command");
+				sender.sendMessage("You do not have permission to use this command");
 				return true;
 			}
 			
@@ -96,42 +128,64 @@ public class BannedItems extends JavaPlugin {
 				return true;
 			}
 			
-			// // Check if the item is allowed
-			if (!isIgnored(itemId)) {
+			return this.giveItem(senderPlayer, player, itemId, amount);
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Function that hands out the candy :)
+	 * @param sender The player that hands out the candy
+	 * @param player Target player that gets the item(s)
+	 * @param itemId The id of the item that we want to give
+	 * @param amount The amount of the stack to hand over
+	 * @return boolean
+	 */
+	private boolean giveItem(Player sender, Player player, Integer itemId, Integer amount) {
+		
+		// Check if the item is allowed
+		if (!isIgnored(itemId)) {
+			
+			try {
+				// Check excistence of the item
+				Material material = Material.getMaterial(itemId);
+				if (material.equals(false)) {
+					
+					sender.sendMessage("That item does not exists");
+					return true;
+				}
 				
 				// Build up the item stack
 				ItemStack itemStack = new ItemStack(itemId);
-				
-				// Check if the stack needs to be incremented
-				if (args.length > 2 && Integer.parseInt(args[2]) > 0) {
-					itemStack.setAmount(Integer.parseInt(args[2]));
-				} else {
-					itemStack.setAmount(1);
-				}
+				itemStack.setAmount(amount);
 				
 				// Eventually hand out the candy ^_^
 				player.getInventory().addItem(itemStack);
+				player.updateInventory();
 				
 				// Send message to the the users who are involved
-				if (senderPlayer.getEntityId() == player.getEntityId()) {
+				if (sender.getName() == player.getName()) {
 				
 					sender.sendMessage("You gave yourself item "+itemId);
 				} else {
 					
 					sender.sendMessage("Item "+itemId+" given to "+player.getName());
-					player.sendMessage(senderPlayer.getName()+" gave you item "+itemId);
+					player.sendMessage(sender.getName()+" gave you item "+itemId);
 				}
+			} catch (Exception e) {
 				
-				return true;
-			} else {
-				
-				// Send message to the player
-				sender.sendMessage("Sorry but that item is restricted");
+				sender.sendMessage("Something went wrong, maybe a non existing itemId");
 				return true;
 			}
+			
+			return true;
+		} else {
+			
+			// Send message to the player
+			sender.sendMessage("Sorry but that item is restricted");
+			return true;
 		}
-		
-		return false;
 	}
 	
 	/**
