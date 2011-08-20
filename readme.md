@@ -25,3 +25,7 @@ The command can be used just the same way you would use the default `/give` comm
 Alternately you can also use `/g`, `/i` or `/item` instead of `/give`
 
 `/give <PlayerName> <ItemId> <Amount (optional)>`
+
+Permissions
+===========
+The plugin currently supports a permission check by the key 'BannedItems.give'.
