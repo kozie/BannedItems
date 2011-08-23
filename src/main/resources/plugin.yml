@@ -1,8 +1,18 @@
 name: BannedItems
 main: org.kozie87.BannedItems
-version: 1.3
+version: 1.4.1
 commands:
   give:
-    aliases: [g, i, item]
+    aliases: [g]
     description: The usual give command overrided by BannedItems
-    usage: /<command> [PlayerName] [DataValue] [Quantity]
+    usage: /<command> [PlayerName] [ItemID] [Quantity]
+    permission: BannedItems.give
+  item:
+    aliases: [i]
+    description: Alternative for the give command to give item to self
+    usage: /<command> [ItemID] [Quantitiy]
+    permission: BannedItems.give
+permissions:
+    BannedItems.give:
+        description: Allows you to hand out items
+        default: op

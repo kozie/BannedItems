@@ -1,5 +1,5 @@
 /**
- * BannedItems - v1.4
+ * BannedItems - v1.4.1
  * 
  * Simple plugin that overrides the default /give server command.
  * Only items not in the ignored-items.txt list are allowed to spawn
@@ -105,7 +105,13 @@ public class BannedItems extends JavaPlugin {
 			} else {
 				
 				// Get the item id
-				itemId = Integer.parseInt(args[0]);
+				try {
+					itemId = Integer.parseInt(args[0]);
+				} catch (Exception e) {
+					
+					senderPlayer.sendMessage("That number is not valid.");
+					return true;
+				}
 				
 				// Check if there's an amount requested
 				if (args.length > 1 && Integer.parseInt(args[1]) > 0) {
@@ -145,7 +151,7 @@ public class BannedItems extends JavaPlugin {
 	private boolean giveItem(Player sender, Player player, Integer itemId, Integer amount) {
 		
 		// Check if the item is allowed
-		if (!isIgnored(itemId)) {
+		if (!this.isIgnored(itemId)) {
 			
 			try {
 				// Check excistence of the item
